@@ -37,6 +37,8 @@
     .brand-mark svg { width: 22px; height: 22px; }
     .nav-links { display: flex; align-items: center; gap: 28px; color: #526159; font-size: 14px; font-weight: 700; }
     .nav-links a:hover { color: var(--green); }
+    .nav-links .admin-link { padding: 8px 12px; color: var(--green); background: var(--sage); border-radius: 9px; }
+    .nav-links .admin-link:hover { color: var(--green-deep); background: var(--lime); }
     .nav-actions { display: flex; align-items: center; gap: 10px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid transparent; border-radius: 999px; padding: 13px 18px; font-weight: 800; font-size: 13px; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
     .btn:hover { transform: translateY(-2px); }
@@ -168,6 +170,8 @@
     .modal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
     .modal-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 15px 0 0; }
     .modal-media:empty { display: none; }
+    .modal-price { margin-top: 14px; color: var(--green); font-size: 18px; font-weight: 900; }
+    .modal-price:empty { display: none; }
     .modal-media img, .modal-media video { width: 100%; max-height: 190px; object-fit: cover; border-radius: 12px; background: var(--cream); }
     .demo-note { margin-top: 18px; padding: 10px 12px; border-left: 3px solid var(--orange); color: #785846; background: #fff5e9; font-size: 11px; }
 
@@ -235,6 +239,7 @@
         <a href="#annonces">Catalogue</a>
         <a href="#fonctionnement">Comment ça marche</a>
         <a href="#contact">Contact</a>
+        <a class="admin-link" href="admin-production.html">Admin</a>
       </nav>
       <div class="nav-actions">
         <a class="btn btn-primary" href="#annonces">Voir le catalogue <span aria-hidden="true">↗</span></a>
@@ -312,15 +317,15 @@
           <div id="customListings" style="display: contents;"></div>
           <article class="listing" data-category="estate" data-search="villa cocody immobilier maison">
             <div class="listing-photo estate"><span class="badge">À LA UNE</span><svg viewBox="0 0 250 160" fill="none" aria-hidden="true"><path d="M28 125h194M53 125V69l72-45 72 45v56" fill="#EEF7E7" stroke="#153F32" stroke-width="5" stroke-linejoin="round"/><path d="m32 72 93-57 93 57" stroke="#D8ED6F" stroke-width="9" stroke-linecap="round"/><path d="M106 125V89h38v36" fill="#A6C8A7" stroke="#153F32" stroke-width="5"/><path d="M71 79h20v20H71zm88 0h20v20h-20z" fill="#609D7E" stroke="#153F32" stroke-width="4"/></svg></div>
-            <div class="listing-body"><div class="listing-meta"><span>Immobilier · Cocody</span><span>Il y a 2 h</span></div><h3>Villa familiale avec jardin</h3><div class="price">À partir de 85 000 000 FCFA</div><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Villa familiale avec jardin" data-type="Immobilier · Cocody">Détails</button></div></div>
+            <div class="listing-body"><div class="listing-meta"><span>Immobilier · Cocody</span><span>Il y a 2 h</span></div><h3>Villa familiale avec jardin</h3><div class="price">À partir de 85 000 000 FCFA</div><p class="listing-description">Villa familiale, jardin, espace calme et possibilité de visite sur rendez-vous.</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Villa familiale avec jardin" data-type="Immobilier · Cocody">Détails</button></div></div>
           </article>
           <article class="listing" data-category="vehicle" data-search="toyota voiture corolla véhicule marcory">
             <div class="listing-photo vehicle"><span class="badge">BON RAPPORT</span><svg viewBox="0 0 250 160" fill="none" aria-hidden="true"><path d="M30 109 43 74l25-15h87l34 17 25 33v17H30v-17Z" fill="#F8E6D7" stroke="#153F32" stroke-width="5" stroke-linejoin="round"/><path d="m75 61 11-26h64l25 28" fill="#D86F55" stroke="#153F32" stroke-width="5" stroke-linejoin="round"/><path d="M89 41h56l13 22H79l10-22Z" fill="#A7C5B3" stroke="#153F32" stroke-width="4"/><path d="M39 87h171" stroke="#153F32" stroke-width="4"/><circle cx="70" cy="126" r="14" fill="#153F32"/><circle cx="182" cy="126" r="14" fill="#153F32"/><circle cx="70" cy="126" r="5" fill="#D8ED6F"/><circle cx="182" cy="126" r="5" fill="#D8ED6F"/></svg></div>
-            <div class="listing-body"><div class="listing-meta"><span>Voiture · Marcory</span><span>Hier</span></div><h3>Toyota Corolla 2020</h3><div class="price">12 500 000 FCFA</div><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Toyota Corolla 2020" data-type="Voiture · Marcory">Détails</button></div></div>
+            <div class="listing-body"><div class="listing-meta"><span>Voiture · Marcory</span><span>Hier</span></div><h3>Toyota Corolla 2020</h3><div class="price">12 500 000 FCFA</div><p class="listing-description">Toyota Corolla 2020, bon état général, disponible à Marcory.</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Toyota Corolla 2020" data-type="Voiture · Marcory">Détails</button></div></div>
           </article>
           <article class="listing" data-category="dog" data-search="chien berger chiot bingerville animal">
             <div class="listing-photo dog"><span class="badge">NOUVEAU</span><svg viewBox="0 0 250 160" fill="none" aria-hidden="true"><path d="M67 105c-9-33 10-60 43-52 10-19 48-14 51 18 37-5 42 37 13 48-11 24-76 30-107-14Z" fill="#D8B874" stroke="#153F32" stroke-width="5" stroke-linejoin="round"/><path d="M77 55 62 29l25 10m65 6 16-25 6 30" fill="#B58B52" stroke="#153F32" stroke-width="5" stroke-linejoin="round"/><circle cx="101" cy="78" r="4" fill="#153F32"/><circle cx="143" cy="78" r="4" fill="#153F32"/><path d="M119 95c6 5 12 5 18 0" stroke="#153F32" stroke-width="4" stroke-linecap="round"/><circle cx="82" cy="123" r="13" fill="#153F32"/><circle cx="172" cy="123" r="13" fill="#153F32"/></svg></div>
-            <div class="listing-body"><div class="listing-meta"><span>Chiens · Bingerville</span><span>Il y a 5 h</span></div><h3>Chiots disponibles à la réservation</h3><div class="price">À partir de 250 000 FCFA</div><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Chiots disponibles à la réservation" data-type="Chiens · Bingerville">Détails</button></div></div>
+            <div class="listing-body"><div class="listing-meta"><span>Chiens · Bingerville</span><span>Il y a 5 h</span></div><h3>Chiots disponibles à la réservation</h3><div class="price">À partir de 250 000 FCFA</div><p class="listing-description">Chiots disponibles à la réservation. Photos, vidéo et informations sur demande.</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Annonce contrôlée</span><button class="details" data-title="Chiots disponibles à la réservation" data-type="Chiens · Bingerville">Détails</button></div></div>
           </article>
         </div>
         <div class="empty-state" id="emptyState">Aucune offre ne correspond à ta recherche. Essaie un autre mot ou contacte-moi pour connaître les autres possibilités.</div>
@@ -329,7 +334,7 @@
 
     <section class="section process" id="fonctionnement">
       <div class="shell">
-        <div class="section-head"><div><div class="section-kicker">Simple et direct</div><h2>Du choix au contact.</h2></div><p class="section-intro">Chaque publication est préparée par moi pour que tu puisses visiter, comparer et appeler rapidement.</p></div>
+        <div class="section-head"><div><div class="section-kicker">Simple et direct</div><h2>Du choix au contact.</h2></div></div>
         <div class="process-grid">
           <div class="step"><span class="step-number">01</span><h3>Je sélectionne</h3><p>Je rassemble les offres disponibles avec les photos, la vidéo, le prix et une description simple.</p></div>
           <div class="step"><span class="step-number">02</span><h3>Tu explores</h3><p>Tu regardes les images, la vidéo et les détails de chaque offre qui t'intéresse.</p></div>
@@ -356,7 +361,7 @@
   </footer>
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Contact annonce</div><h3 id="modalTitle">Annonce</h3><div class="modal-media" id="modalMedia"></div><p id="modalText">Pour obtenir les photos, la vidéo, le prix exact ou organiser une visite, contacte-moi directement. Les coordonnées visibles ici sont des exemples à remplacer par les tiennes.</p><div class="modal-actions"><a class="btn btn-primary" href="https://wa.me/2250700000000?text=Bonjour%20Nexora%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20une%20annonce." target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" href="mailto:bonjour@nexora.ci">Envoyer un email</a></div><div class="demo-note">Prototype : je suis le seul à publier. Remplace le numéro WhatsApp, l'email, les liens sociaux et les offres d'exemple avant la mise en ligne.</div></div>
+    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Détails de l’offre</div><h3 id="modalTitle">Annonce</h3><div class="modal-media" id="modalMedia"></div><div class="modal-price" id="modalPrice"></div><p id="modalText">Consulte les médias et les informations de cette offre. Tu peux ensuite me contacter pour une question ou une visite.</p><div class="modal-actions"><a class="btn btn-primary" href="https://wa.me/2250700000000?text=Bonjour%20Nexora%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20une%20annonce." target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" href="mailto:bonjour@nexora.ci">Envoyer un email</a></div></div>
   </div>
 
   <script>
@@ -406,8 +411,14 @@
     const modalText = document.getElementById('modalText');
     function closeModal() { backdrop.classList.remove('open'); document.body.style.overflow = ''; }
     document.querySelectorAll('.details').forEach(button => button.addEventListener('click', () => {
+      const card = button.closest('.listing');
+      const cardMedia = card ? card.querySelector('.listing-photo') : null;
+      const cardPrice = card ? card.querySelector('.price') : null;
+      const cardDescription = card ? card.querySelector('.listing-description') : null;
       modalTitle.textContent = button.dataset.title;
-      modalText.textContent = button.dataset.type + ' — Pour voir les photos, la vidéo, le prix final et organiser une visite, contacte-moi directement sur WhatsApp.';
+      document.getElementById('modalPrice').textContent = cardPrice ? cardPrice.textContent : '';
+      document.getElementById('modalMedia').innerHTML = cardMedia ? cardMedia.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') : '';
+      modalText.textContent = (cardDescription ? cardDescription.textContent + ' ' : '') + 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
       backdrop.classList.add('open'); document.body.style.overflow = 'hidden';
     }));
     document.getElementById('modalClose').addEventListener('click', closeModal);
@@ -439,8 +450,11 @@
         </article>`;
       }).join('');
       customListings.querySelectorAll('.custom-details').forEach(button => button.addEventListener('click', () => {
+        const card = button.closest('.listing');
         modalTitle.textContent = button.dataset.title;
-        modalText.textContent = button.dataset.type + ' — Pour voir les photos, la vidéo, le prix final et organiser une visite, contacte-moi directement sur WhatsApp.';
+        document.getElementById('modalPrice').textContent = card?.querySelector('.price')?.textContent || '';
+        document.getElementById('modalMedia').innerHTML = card?.querySelector('.listing-photo')?.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') || '';
+        modalText.textContent = (card?.querySelector('.listing-description')?.textContent || '') + ' Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
         backdrop.classList.add('open'); document.body.style.overflow = 'hidden';
       }));
       applyFilters();
@@ -468,7 +482,8 @@
           }).join('');
           liveListings.querySelectorAll('.live-details').forEach(button => button.addEventListener('click', () => {
             document.getElementById('modalTitle').textContent = button.dataset.title;
-            document.getElementById('modalText').textContent = button.dataset.type + ' — ' + (button.dataset.description || 'Pour obtenir les détails, contacte-moi directement sur WhatsApp.');
+            document.getElementById('modalPrice').textContent = button.closest('.listing')?.querySelector('.price')?.textContent || '';
+            document.getElementById('modalText').textContent = button.dataset.description || 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
             const media = document.getElementById('modalMedia');
             let images = []; try { images = JSON.parse(button.dataset.images || '[]'); } catch (e) { images = []; }
             media.innerHTML = images.map(src => `<img src="${src}" alt="${button.dataset.title}">`).join('') + (button.dataset.video ? `<video src="${button.dataset.video}" controls playsinline></video>` : '');
