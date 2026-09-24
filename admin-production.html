@@ -12,8 +12,7 @@
 <body>
   <header class="top"><div class="shell nav"><a class="brand" href="index.html"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 17.5 12 5l7 12.5M8.1 12h7.8M4 19h16" stroke-linecap="round" stroke-linejoin="round"/></svg></span>NEXORA · ADMIN</a><div class="session" id="session"><span id="sessionEmail"></span><button id="logout" type="button">Se déconnecter</button></div><a class="back" href="index.html">← Voir le catalogue</a></div></header>
   <main class="main"><div class="shell">
-    <div class="headline"><div><div class="eyebrow">Espace propriétaire sécurisé</div><h1>Gérer mes offres.</h1></div><p>Tu es le seul à publier. Les clients voient uniquement les offres disponibles et te contactent pour les détails ou une visite.</p></div>
-    <div class="notice"><strong>Version connectée :</strong> cette page utilise Supabase pour l'authentification, la base de données et le stockage des images/vidéos. Renseigne d'abord `supabase-config.js` et exécute `supabase/schema.sql`.</div>
+    <div class="headline"><div><div class="eyebrow">Espace propriétaire sécurisé</div><h1>Gérer mes offres.</h1></div></div>
 
     <section class="panel" id="loginPanel"><h2>Connexion administrateur</h2><div class="auth-message" id="loginMessage">Connecte-toi avec l'adresse email créée dans Supabase Authentication.</div><form id="loginForm"><div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" required placeholder="ton@email.com"></div><div class="field"><label for="loginPassword">Mot de passe</label><input id="loginPassword" type="password" required placeholder="••••••••"></div><button class="btn" type="submit">Se connecter ↗</button></form></section>
 
@@ -61,7 +60,7 @@
       if (!supabase) return setMessage(loginMessage, 'Configure d’abord supabase-config.js avec l’URL et la clé anon publique.');
       setMessage(loginMessage, 'Connexion…');
       const { error } = await supabase.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPassword').value });
-      if (error) setMessage(loginMessage, error.message === 'Failed to fetch' ? 'Connexion impossible : le visualiseur de fichiers bloque les connexions externes. Ouvre le site dans le Live Preview ou sur une adresse Vercel, puis réessaie.' : 'Connexion impossible : ' + error.message);
+      if (error) setMessage(loginMessage, error.message === 'Failed to fetch' ? 'Connexion impossible : vérifie le Project URL Supabase dans supabase-config.js. Le site est bien ouvert sur Vercel, donc ce message indique probablement une URL Supabase incorrecte ou inaccessible.' : 'Connexion impossible : ' + error.message);
     });
     $('logout').addEventListener('click', async () => { await supabase.auth.signOut(); });
     $('postForm').addEventListener('submit', async event => {
