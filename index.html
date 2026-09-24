@@ -366,7 +366,7 @@
   </footer>
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Détails de l’offre</div><h3 id="modalTitle">Annonce</h3><div class="modal-media" id="modalMedia"></div><div class="modal-price" id="modalPrice"></div><p id="modalText">Consulte les médias et les informations de cette offre. Tu peux ensuite me contacter pour une question ou une visite.</p><div class="modal-actions"><a class="btn btn-primary" href="https://wa.me/2250501471442?text=Bonjour%20Nexora%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20une%20annonce." target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" href="mailto:nexoraci1@gmail.com">Envoyer un email</a></div></div>
+    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Détails de l’offre</div><h3 id="modalTitle">Annonce</h3><div class="modal-media" id="modalMedia"></div><div class="modal-price" id="modalPrice"></div><p id="modalText">Consulte les médias et les informations de cette offre. Tu peux ensuite me contacter pour une question ou une visite.</p><div class="modal-actions"><a class="btn btn-primary" id="modalWhatsapp" href="https://wa.me/2250501471442" target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" id="modalEmail" href="mailto:nexoraci1@gmail.com">Envoyer un email</a><button class="btn btn-light" id="modalShare" type="button">Partager l’offre ↗</button></div></div>
   </div>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image en plein écran"><button class="lightbox-close" id="lightboxClose" aria-label="Fermer l’image">×</button><img id="lightboxImage" alt=""></div>
@@ -424,12 +424,33 @@
     document.addEventListener('click', event => { const image = event.target.closest('.listing-photo img, .modal-media img'); if (image) openLightbox(image); });
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
+    let currentOffer = { id: '', title: '', category: '', city: '', price: '', description: '', images: [], video: '' };
+    function offerMessage(offer) {
+      const pageUrl = window.location.origin + window.location.pathname + (offer.id ? `?offre=${encodeURIComponent(offer.id)}` : '') + '#annonces';
+      const media = [...(offer.images || []).map((url, i) => `Image ${i + 1}: ${url}`), offer.video ? `Vidéo: ${offer.video}` : ''].filter(Boolean).join('\n');
+      return [`Bonjour Nexora, je suis intéressé(e) par cette offre :`, `Titre: ${offer.title}`, offer.category ? `Catégorie: ${offer.category}` : '', offer.city ? `Lieu: ${offer.city}` : '', offer.price ? `Prix: ${offer.price}` : '', offer.description ? `Description: ${offer.description}` : '', media, `Lien: ${pageUrl}`].filter(Boolean).join('\n');
+    }
+    function setOfferContact(offer) {
+      currentOffer = offer;
+      const message = encodeURIComponent(offerMessage(offer));
+      document.getElementById('modalWhatsapp').href = `https://wa.me/2250501471442?text=${message}`;
+      document.getElementById('modalEmail').href = `mailto:nexoraci1@gmail.com?subject=${encodeURIComponent('Intérêt pour ' + offer.title)}&body=${encodeURIComponent(offerMessage(offer))}`;
+    }
+    document.getElementById('modalShare').addEventListener('click', async () => {
+      const shareText = offerMessage(currentOffer);
+      try {
+        if (navigator.share) await navigator.share({ title: currentOffer.title || 'Offre Nexora', text: shareText, url: window.location.href });
+        else { await navigator.clipboard.writeText(shareText); alert('Les détails de l’offre ont été copiés.'); }
+      } catch (error) { if (error.name !== 'AbortError') alert('Copie impossible.'); }
+    });
     document.querySelectorAll('.details').forEach(button => button.addEventListener('click', () => {
       const card = button.closest('.listing');
       const cardMedia = card ? card.querySelector('.listing-photo') : null;
       const cardPrice = card ? card.querySelector('.price') : null;
       const cardDescription = card ? card.querySelector('.listing-description') : null;
       modalTitle.textContent = button.dataset.title;
+      const staticOffer = { id: '', title: button.dataset.title, category: button.dataset.type.split(' · ')[0], city: button.dataset.type.split(' · ')[1] || '', price: cardPrice ? cardPrice.textContent : '', description: cardDescription ? cardDescription.textContent : '', images: [], video: '' };
+      setOfferContact(staticOffer);
       document.getElementById('modalPrice').textContent = cardPrice ? cardPrice.textContent : '';
       document.getElementById('modalMedia').innerHTML = cardMedia ? cardMedia.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') : '';
       modalText.textContent = (cardDescription ? cardDescription.textContent + ' ' : '') + 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
@@ -466,9 +487,11 @@
       customListings.querySelectorAll('.custom-details').forEach(button => button.addEventListener('click', () => {
         const card = button.closest('.listing');
         modalTitle.textContent = button.dataset.title;
-        document.getElementById('modalPrice').textContent = card?.querySelector('.price')?.textContent || '';
+        const customOffer = { id: '', title: button.dataset.title, category: button.dataset.type.split(' · ')[0], city: button.dataset.type.split(' · ')[1] || '', price: card?.querySelector('.price')?.textContent || '', description: card?.querySelector('.listing-description')?.textContent || '', images: [], video: '' };
+        setOfferContact(customOffer);
+        document.getElementById('modalPrice').textContent = customOffer.price;
         document.getElementById('modalMedia').innerHTML = card?.querySelector('.listing-photo')?.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') || '';
-        modalText.textContent = (card?.querySelector('.listing-description')?.textContent || '') + ' Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
+        modalText.textContent = customOffer.description + ' Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
         backdrop.classList.add('open'); document.body.style.overflow = 'hidden';
       }));
       applyFilters();
@@ -507,21 +530,28 @@
               ? `<img src="${mediaSafe(image)}" alt="${mediaSafe(post.title)}">`
               : `<svg viewBox="0 0 250 160" fill="none" aria-hidden="true"><rect x="36" y="35" width="178" height="103" rx="8" fill="#EEF7E7" stroke="#153F32" stroke-width="5"/><circle cx="82" cy="72" r="13" fill="#F08B5D"/><path d="m49 120 42-37 28 23 22-16 61 30" stroke="#5A997A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
           const imageData = JSON.stringify(images).replace(/'/g, '&#39;');
-          return `<article class="listing live-listing" data-category="${category}" data-search="${mediaSafe(`${post.title || ''} ${post.city || ''} ${post.description || ''} ${post.price || ''}`.toLowerCase())}"><div class="listing-photo ${category}"><span class="badge">${video ? 'PHOTO + VIDÉO' : 'NOUVELLE OFFRE'}</span>${media}</div><div class="listing-body"><div class="listing-meta"><span>${mediaSafe(categoryNamesLive[category])} · ${mediaSafe(post.city)}</span><span>Disponible</span></div><h3>${mediaSafe(post.title)}</h3><div class="price">${mediaSafe(post.price)}</div><p class="listing-description">${mediaSafe(post.description)}</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Publié par Nexora</span><button class="details live-details" data-title="${mediaSafe(post.title)}" data-description="${mediaSafe(post.description)}" data-price="${mediaSafe(post.price)}" data-images='${imageData}' data-video="${mediaSafe(video)}">Détails</button></div></div></article>`;
+          return `<article class="listing live-listing" data-category="${category}" data-search="${mediaSafe(`${post.title || ''} ${post.city || ''} ${post.description || ''} ${post.price || ''}`.toLowerCase())}"><div class="listing-photo ${category}"><span class="badge">${video ? 'PHOTO + VIDÉO' : 'NOUVELLE OFFRE'}</span>${media}</div><div class="listing-body"><div class="listing-meta"><span>${mediaSafe(categoryNamesLive[category])} · ${mediaSafe(post.city)}</span><span>Disponible</span></div><h3>${mediaSafe(post.title)}</h3><div class="price">${mediaSafe(post.price)}</div><p class="listing-description">${mediaSafe(post.description)}</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Publié par Nexora</span><button class="details live-details" data-id="${mediaSafe(post.id)}" data-title="${mediaSafe(post.title)}" data-category="${mediaSafe(categoryNamesLive[category])}" data-city="${mediaSafe(post.city)}" data-description="${mediaSafe(post.description)}" data-price="${mediaSafe(post.price)}" data-images='${imageData}' data-video="${mediaSafe(video)}">Détails</button></div></div></article>`;
         }).join('');
         if (!cardsHtml) return;
         liveListings.innerHTML = cardsHtml;
         document.body.classList.add('live-data-active');
         liveListings.querySelectorAll('.live-details').forEach(button => button.addEventListener('click', () => {
           document.getElementById('modalTitle').textContent = button.dataset.title;
-          document.getElementById('modalPrice').textContent = button.dataset.price || '';
-          document.getElementById('modalText').textContent = button.dataset.description || 'Pour demander une visite ou une information complémentaire, contacte-moi directement.';
-          const media = document.getElementById('modalMedia');
           let images = []; try { images = JSON.parse(button.dataset.images || '[]'); } catch (e) { images = []; }
+          const liveOffer = { id: button.dataset.id || '', title: button.dataset.title, category: button.dataset.category, city: button.dataset.city, price: button.dataset.price, description: button.dataset.description, images, video: button.dataset.video || '' };
+          setOfferContact(liveOffer);
+          document.getElementById('modalPrice').textContent = button.dataset.price || '';
+          document.getElementById('modalText').textContent = button.dataset.description || 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
+          const media = document.getElementById('modalMedia');
           media.innerHTML = images.map(src => `<img src="${src}" alt="${button.dataset.title}">`).join('') + (button.dataset.video ? `<video src="${button.dataset.video}" controls playsinline></video>` : '');
           document.getElementById('modalBackdrop').classList.add('open'); document.body.style.overflow = 'hidden';
         }));
         document.dispatchEvent(new Event('nexora:refresh'));
+        const sharedId = new URLSearchParams(window.location.search).get('offre');
+        if (sharedId) {
+          const sharedButton = liveListings.querySelector(`.live-details[data-id="${CSS.escape(sharedId)}"]`);
+          if (sharedButton) sharedButton.click();
+        }
       } catch (error) {
         console.info('Catalogue Supabase non connecté :', error.message);
       }
