@@ -122,7 +122,11 @@
     .live-data-active .listing:not(.custom-listing):not(.live-listing) { display: none; }
     .badge { position: absolute; left: 12px; top: 12px; padding: 6px 9px; border-radius: 8px; color: var(--green-deep); background: rgba(255,255,255,.78); font-size: 10px; font-weight: 900; }
     .listing-body { padding: 16px; }
-    .listing-meta { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; }
+    .listing-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; }
+    .status-badge { display: inline-flex; align-items: center; padding: 4px 7px; border-radius: 6px; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+    .status-available { color: var(--green); background: var(--sage); }
+    .status-reserved { color: #8a5c18; background: #f9e7ac; }
+    .status-sold { color: #8b4438; background: #f5d2c8; }
     .listing h3 { margin: 7px 0 9px; font-size: 17px; letter-spacing: -.035em; }
     .price { color: var(--green); font-size: 16px; font-weight: 900; }
     .listing-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--line); }
@@ -163,16 +167,47 @@
 
     .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: none; place-items: center; padding: 20px; background: rgba(8,28,22,.62); }
     .modal-backdrop.open { display: grid; }
-    .modal { width: min(520px, 100%); position: relative; padding: 28px; background: var(--paper); border-radius: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.25); }
+    .modal { width: min(680px, 100%); max-height: 92vh; position: relative; padding: clamp(22px, 4vw, 34px); overflow-y: auto; background: var(--paper); border-radius: 26px; box-shadow: 0 30px 80px rgba(0,0,0,.25); }
     .modal-close { position: absolute; top: 13px; right: 13px; width: 34px; height: 34px; border: 0; border-radius: 50%; color: var(--muted); background: var(--cream); font-size: 22px; }
-    .modal h3 { margin: 4px 0 8px; font-size: 26px; letter-spacing: -.05em; }
-    .modal p { color: var(--muted); font-size: 14px; }
-    .modal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-    .modal-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 15px 0 0; }
+    .modal h3 { margin: 6px 0 8px; font-size: clamp(25px, 5vw, 38px); line-height: 1.04; letter-spacing: -.065em; }
+    .modal p { margin: 14px 0 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+    .modal-actions { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 9px; margin-top: 22px; }
+    .modal-actions .btn { min-width: 0; padding: 12px 11px; white-space: nowrap; }
+    .contact-box { margin-top: 22px; padding: 16px; background: #f4f7f1; border: 1px solid var(--line); border-radius: 16px; }
+    .contact-box-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 11px; }
+    .contact-box h4 { margin: 0; font-size: 15px; letter-spacing: -.03em; }
+    .contact-box-head span { color: var(--muted); font-size: 10px; font-weight: 800; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .contact-box input, .contact-box textarea { width: 100%; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; outline: 0; color: var(--ink); background: var(--paper); font: inherit; font-size: 12px; }
+    .contact-box textarea { min-height: 76px; margin-top: 8px; resize: vertical; }
+    .contact-box input:focus, .contact-box textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(30,91,71,.1); }
+    .contact-box .btn { width: 100%; margin-top: 9px; }
+    .contact-status { min-height: 16px; margin-top: 8px; color: var(--green); font-size: 11px; }
+    .community { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .community.is-disabled { display: none; }
+    .community-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .community-btn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); padding: 10px 13px; border-radius: 999px; color: var(--green); background: var(--paper); font-size: 12px; font-weight: 900; }
+    .community-btn.liked { color: #c4523e; background: #fff0e9; border-color: #f2c6b7; }
+    .community-btn span { font-size: 19px; line-height: .8; }
+    .community-note, .comment-status { color: var(--muted); font-size: 11px; }
+    .comments { margin-top: 20px; }
+    .comments h4 { margin: 0 0 12px; font-size: 15px; letter-spacing: -.03em; }
+    .comments-list { display: grid; gap: 9px; max-height: 170px; overflow: auto; }
+    .comment-item { padding: 10px 12px; background: var(--cream); border-radius: 11px; }
+    .comment-item strong { display: block; font-size: 11px; }
+    .comment-item p { margin: 4px 0 0; font-size: 12px; line-height: 1.4; }
+    .comment-form { margin-top: 13px; }
+    .comment-row { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
+    .comment-form input, .comment-form textarea { width: 100%; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; outline: 0; color: var(--ink); background: #fbfcfa; font: inherit; font-size: 12px; }
+    .comment-form textarea { min-height: 62px; margin-top: 7px; resize: vertical; }
+    .comment-form input:focus, .comment-form textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(30,91,71,.1); }
+    .comment-status { min-height: 16px; margin-top: 7px; }
+    .modal-meta { margin: 0 0 15px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .modal-media { display: flex; gap: 10px; margin: 16px 0 0; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }\n    .modal-media::-webkit-scrollbar { display: none; }
     .modal-media:empty { display: none; }
-    .modal-price { margin-top: 14px; color: var(--green); font-size: 18px; font-weight: 900; }
+    .modal-price { display: inline-flex; margin-top: 17px; padding: 8px 12px; color: var(--green); background: var(--sage); border-radius: 10px; font-size: 18px; font-weight: 900; }
     .modal-price:empty { display: none; }
-    .modal-media img, .modal-media video { width: 100%; max-height: 190px; object-fit: cover; border-radius: 12px; background: var(--cream); }
+    .modal-media > img, .modal-media > video { flex: 0 0 100%; width: 100%; max-height: 330px; object-fit: contain; scroll-snap-align: center; border-radius: 14px; background: #eef0eb; }
     .listing-photo img, .modal-media img { cursor: zoom-in; }
     .lightbox { position: fixed; inset: 0; z-index: 40; display: none; place-items: center; padding: 18px; background: rgba(4, 12, 9, .94); }
     .lightbox.open { display: grid; }
@@ -219,6 +254,15 @@
       .cta { padding-bottom: 52px; }
       .cta-box { display: block; padding: 30px 25px; }
       .cta-box .btn { margin-top: 22px; }
+      .modal { max-height: 90vh; padding: 23px 18px 19px; border-radius: 25px; }
+      .modal-media { gap: 9px; }
+      .modal-media img, .modal-media video { max-height: 310px; }
+      .modal-actions { grid-template-columns: 1fr 1fr; }
+      .modal-actions .btn-primary { grid-column: 1 / -1; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .community-actions { align-items: flex-start; flex-direction: column; }
+      .comment-row { grid-template-columns: 1fr; }
+      .comment-row .btn { width: 100%; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 18px; }
       .footer-grid > :first-child { grid-column: 1 / -1; }
       .footer-bottom { display: block; }
@@ -358,20 +402,20 @@
       <div class="footer-grid">
         <div><a class="brand" href="#accueil"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 17.5 12 5l7 12.5M8.1 12h7.8M4 19h16" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>NEXORA</span></a><p class="footer-intro">Mon catalogue local pour découvrir, choisir et avancer plus facilement.</p></div>
         <div><div class="footer-title">Découvrir</div><div class="footer-links"><a href="#categories">Immobilier</a><a href="#categories">Voitures</a><a href="#categories">Chiens</a></div></div>
-        <div><div class="footer-title">Nous joindre</div><div class="footer-links"><a href="https://wa.me/2250501471442" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:nexoraci1@gmail.com">nexoraci1@gmail.com</a><a href="tel:+2250501471442">+225 05 01 47 14 42</a></div></div>
+        <div><div class="footer-title">Nous joindre</div><div class="footer-links"><a href="https://wa.me/2250501471442" target="_blank" rel="noopener">WhatsApp</a><a href="/cdn-cgi/l/email-protection#5638332e392437353f6716313b373f3a7835393b"><span class="__cf_email__" data-cfemail="d3bdb6abbca1b2b0bae293b4beb2babffdb0bcbe">[email&#160;protected]</span></a><a href="tel:+2250501471442">+225 05 01 47 14 42</a></div></div>
         <div><div class="footer-title">Réseaux</div><div class="footer-links"><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a><a href="#annonces">Visiter le catalogue</a></div></div>
       </div>
-      <div class="footer-bottom"><span>© 2026 Nexora. Tous droits réservés.</span><div class="socials"><a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v8h4v-8h3.5l.5-4H13V9c0-.7.3-1 1-1Z"/></svg></a><a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4c.5 2.5 2 4 4.5 4v3c-1.7 0-3.2-.5-4.5-1.4V16a5 5 0 1 1-4-4.9" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="mailto:nexoraci1@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
+      <div class="footer-bottom"><span>© 2026 Nexora. Tous droits réservés.</span><div class="socials"><a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v8h4v-8h3.5l.5-4H13V9c0-.7.3-1 1-1Z"/></svg></a><a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4c.5 2.5 2 4 4.5 4v3c-1.7 0-3.2-.5-4.5-1.4V16a5 5 0 1 1-4-4.9" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/cdn-cgi/l/email-protection#1779726f786576747e2657707a767e7b3974787a" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>
     </div>
   </footer>
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Détails de l’offre</div><h3 id="modalTitle">Annonce</h3><div class="modal-media" id="modalMedia"></div><div class="modal-price" id="modalPrice"></div><p id="modalText">Consulte les médias et les informations de cette offre. Tu peux ensuite me contacter pour une question ou une visite.</p><div class="modal-actions"><a class="btn btn-primary" id="modalWhatsapp" href="https://wa.me/2250501471442" target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" id="modalEmail" href="mailto:nexoraci1@gmail.com">Envoyer un email</a><button class="btn btn-light" id="modalShare" type="button">Partager l’offre ↗</button></div></div>
+    <div class="modal"><button class="modal-close" id="modalClose" aria-label="Fermer">×</button><div class="section-kicker">Détails de l’offre</div><h3 id="modalTitle">Annonce</h3><div class="modal-meta" id="modalMeta"></div><div class="modal-media" id="modalMedia"></div><div class="modal-price" id="modalPrice"></div><p id="modalText">Consulte les médias et les informations de cette offre. Tu peux ensuite me contacter pour une question ou une visite.</p><div class="modal-actions"><a class="btn btn-primary" id="modalWhatsapp" href="https://wa.me/2250501471442" target="_blank" rel="noopener">Écrire sur WhatsApp ↗</a><a class="btn btn-light" id="modalEmail" href="/cdn-cgi/l/email-protection#b6d8d3ced9c4d7d5df87f6d1dbd7dfda98d5d9db">Envoyer un email</a><button class="btn btn-light" id="modalShare" type="button">Partager l’offre ↗</button></div><div class="contact-box"><div class="contact-box-head"><h4>Écrire au propriétaire</h4><span>Réponse par WhatsApp</span></div><form id="contactForm"><div class="contact-grid"><input id="contactName" maxlength="80" placeholder="Ton nom" required><input id="contactPhone" type="tel" maxlength="30" placeholder="Ton numéro WhatsApp" required></div><textarea id="contactMessage" maxlength="1000" required></textarea><button class="btn btn-primary" type="submit">Envoyer ma demande ↗</button><div class="contact-status" id="contactStatus"></div></form></div><div class="community" id="community"><div class="community-actions"><button class="community-btn" id="modalLike" type="button"><span id="likeIcon">♡</span> J’aime <strong id="likeCount">0</strong></button><span class="community-note" id="shareStatus"></span></div><div class="comments"><h4>Commentaires</h4><div class="comments-list" id="commentsList"></div><form class="comment-form" id="commentForm"><div class="comment-row"><input id="commentName" maxlength="80" placeholder="Ton nom" required><button class="btn btn-light" type="submit">Commenter</button></div><textarea id="commentBody" maxlength="500" placeholder="Écris un commentaire…" required></textarea><div class="comment-status" id="commentStatus"></div></form></div></div></div>
   </div>
 
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image en plein écran"><button class="lightbox-close" id="lightboxClose" aria-label="Fermer l’image">×</button><img id="lightboxImage" alt=""></div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     const header = document.getElementById('site-header');
     const menuToggle = document.querySelector('.menu-toggle');
     menuToggle.addEventListener('click', () => {
@@ -427,21 +471,102 @@
     let currentOffer = { id: '', title: '', category: '', city: '', price: '', description: '', images: [], video: '' };
     function offerMessage(offer) {
       const pageUrl = window.location.origin + window.location.pathname + (offer.id ? `?offre=${encodeURIComponent(offer.id)}` : '') + '#annonces';
-      const media = [...(offer.images || []).map((url, i) => `Image ${i + 1}: ${url}`), offer.video ? `Vidéo: ${offer.video}` : ''].filter(Boolean).join('\n');
-      return [`Bonjour Nexora, je suis intéressé(e) par cette offre :`, `Titre: ${offer.title}`, offer.category ? `Catégorie: ${offer.category}` : '', offer.city ? `Lieu: ${offer.city}` : '', offer.price ? `Prix: ${offer.price}` : '', offer.description ? `Description: ${offer.description}` : '', media, `Lien: ${pageUrl}`].filter(Boolean).join('\n');
+      return [`Bonjour Nexora, je suis intéressé(e) par cette offre :`, `Titre: ${offer.title}`, offer.category ? `Catégorie: ${offer.category}` : '', offer.city ? `Lieu: ${offer.city}` : '', offer.price ? `Prix: ${offer.price}` : '', offer.status && offer.status !== 'available' ? `Statut: ${offer.status === 'reserved' ? 'Réservé' : 'Vendu'}` : '', offer.description ? `Description: ${offer.description}` : '', `Lien de l’offre: ${pageUrl}`].filter(Boolean).join('\n');
     }
     function setOfferContact(offer) {
       currentOffer = offer;
+      const statusLabels = { available: 'Disponible', reserved: 'Réservé', sold: 'Vendu' };
+      document.getElementById('modalMeta').textContent = [offer.category, offer.city, statusLabels[offer.status] || ''].filter(Boolean).join(' · ');
       const message = encodeURIComponent(offerMessage(offer));
       document.getElementById('modalWhatsapp').href = `https://wa.me/2250501471442?text=${message}`;
       document.getElementById('modalEmail').href = `mailto:nexoraci1@gmail.com?subject=${encodeURIComponent('Intérêt pour ' + offer.title)}&body=${encodeURIComponent(offerMessage(offer))}`;
+      document.getElementById('contactMessage').value = `Bonjour, je suis intéressé(e) par l’offre « ${offer.title} ».`;
+      document.getElementById('contactStatus').textContent = '';
     }
-    document.getElementById('modalShare').addEventListener('click', async () => {
-      const shareText = offerMessage(currentOffer);
+    let currentOfferId = '';
+    let visitorId = localStorage.getItem('nexoraVisitorId');
+    if (!visitorId) { visitorId = (crypto.randomUUID ? crypto.randomUUID() : `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`); localStorage.setItem('nexoraVisitorId', visitorId); }
+    let likedCurrentOffer = false;
+    const community = document.getElementById('community');
+    const apiBase = () => `${(config.url || '').replace(/\/$/, '')}/rest/v1/`;
+    function apiHeaders(extra = {}) { return { apikey: config.anonKey, Authorization: `Bearer ${config.anonKey}`, 'Content-Type': 'application/json', ...extra }; }
+    async function apiRequest(path, options = {}) { return fetch(apiBase() + path, { ...options, headers: apiHeaders(options.headers || {}) }); }
+    document.getElementById('contactForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const status = document.getElementById('contactStatus');
+      const name = document.getElementById('contactName').value.trim();
+      const phone = document.getElementById('contactPhone').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      if (!name || !phone || !message || !currentOffer.title) return;
+      status.textContent = 'Envoi de la demande…';
       try {
-        if (navigator.share) await navigator.share({ title: currentOffer.title || 'Offre Nexora', text: shareText, url: window.location.href });
-        else { await navigator.clipboard.writeText(shareText); alert('Les détails de l’offre ont été copiés.'); }
-      } catch (error) { if (error.name !== 'AbortError') alert('Copie impossible.'); }
+        const response = await apiRequest('inquiries', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ listing_id: currentOffer.id || null, listing_title: currentOffer.title, visitor_name: name, visitor_phone: phone, message, status: 'new' }) });
+        if (!response.ok) throw new Error('request');
+        document.getElementById('contactMessage').value = '';
+        status.textContent = 'Demande envoyée. Je vais te répondre sur WhatsApp.';
+      } catch (error) { status.textContent = 'Envoi impossible pour le moment. Utilise WhatsApp ci-dessus.'; }
+    });
+    async function loadCommunity(offerId) {
+      if (!offerId || !config.url || !config.anonKey) return;
+      try {
+        const [likesResponse, mineResponse, commentsResponse] = await Promise.all([
+          apiRequest(`listing_likes?select=id&listing_id=eq.${encodeURIComponent(offerId)}`),
+          apiRequest(`listing_likes?select=id&listing_id=eq.${encodeURIComponent(offerId)}&visitor_id=eq.${encodeURIComponent(visitorId)}`),
+          apiRequest(`listing_comments?select=author_name,body,created_at&listing_id=eq.${encodeURIComponent(offerId)}&status=eq.approved&order=created_at.desc`)
+        ]);
+        const likes = likesResponse.ok ? await likesResponse.json() : [];
+        const mine = mineResponse.ok ? await mineResponse.json() : [];
+        const comments = commentsResponse.ok ? await commentsResponse.json() : [];
+        likedCurrentOffer = mine.length > 0;
+        document.getElementById('likeCount').textContent = likes.length;
+        document.getElementById('likeIcon').textContent = likedCurrentOffer ? '♥' : '♡';
+        document.getElementById('modalLike').classList.toggle('liked', likedCurrentOffer);
+        document.getElementById('commentsList').innerHTML = comments.length ? comments.map(comment => `<article class="comment-item"><strong>${safe(comment.author_name)}</strong><p>${safe(comment.body)}</p></article>`).join('') : '<p class="community-note">Pas encore de commentaire.</p>';
+      } catch (error) { document.getElementById('shareStatus').textContent = 'Réactions indisponibles pour le moment.'; }
+    }
+    function setCommunity(offerId) {
+      currentOfferId = offerId || '';
+      community.classList.toggle('is-disabled', !currentOfferId);
+      if (currentOfferId) loadCommunity(currentOfferId);
+    }
+    async function shareOfferFiles() {
+      const shareText = offerMessage(currentOffer);
+      const urls = [...(currentOffer.images || []), currentOffer.video].filter(Boolean);
+      try {
+        const files = [];
+        for (let index = 0; index < urls.length; index++) {
+          const response = await fetch(urls[index]);
+          if (!response.ok) continue;
+          const blob = await response.blob();
+          const extension = (blob.type.split('/')[1] || (urls[index].includes('.mp4') ? 'mp4' : 'jpg')).split(';')[0];
+          files.push(new File([blob], `nexora-${index + 1}.${extension}`, { type: blob.type || 'application/octet-stream' }));
+        }
+        if (files.length && navigator.share && navigator.canShare && navigator.canShare({ files })) {
+          await navigator.share({ title: currentOffer.title || 'Offre Nexora', text: shareText, files });
+        } else if (navigator.share) {
+          await navigator.share({ title: currentOffer.title || 'Offre Nexora', text: shareText, url: window.location.href });
+        } else {
+          await navigator.clipboard.writeText(shareText); document.getElementById('shareStatus').textContent = 'Le texte de l’offre a été copié.';
+        }
+      } catch (error) { if (error.name !== 'AbortError') document.getElementById('shareStatus').textContent = 'Partage impossible sur cet appareil.'; }
+    }
+    document.getElementById('modalShare').addEventListener('click', shareOfferFiles);
+    document.getElementById('modalLike').addEventListener('click', async () => {
+      if (!currentOfferId || likedCurrentOffer) return;
+      const response = await apiRequest('listing_likes', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ listing_id: currentOfferId, visitor_id: visitorId }) });
+      if (response.ok || response.status === 409) loadCommunity(currentOfferId);
+    });
+    document.getElementById('commentForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!currentOfferId) return;
+      const name = document.getElementById('commentName').value.trim();
+      const body = document.getElementById('commentBody').value.trim();
+      const status = document.getElementById('commentStatus');
+      if (!name || !body) return;
+      status.textContent = 'Envoi…';
+      const response = await apiRequest('listing_comments', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ listing_id: currentOfferId, author_name: name, body, status: 'approved' }) });
+      if (response.ok) { document.getElementById('commentBody').value = ''; status.textContent = 'Commentaire publié.'; loadCommunity(currentOfferId); }
+      else status.textContent = 'Commentaire impossible pour le moment.';
     });
     document.querySelectorAll('.details').forEach(button => button.addEventListener('click', () => {
       const card = button.closest('.listing');
@@ -451,6 +576,7 @@
       modalTitle.textContent = button.dataset.title;
       const staticOffer = { id: '', title: button.dataset.title, category: button.dataset.type.split(' · ')[0], city: button.dataset.type.split(' · ')[1] || '', price: cardPrice ? cardPrice.textContent : '', description: cardDescription ? cardDescription.textContent : '', images: [], video: '' };
       setOfferContact(staticOffer);
+      setCommunity('');
       document.getElementById('modalPrice').textContent = cardPrice ? cardPrice.textContent : '';
       document.getElementById('modalMedia').innerHTML = cardMedia ? cardMedia.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') : '';
       modalText.textContent = (cardDescription ? cardDescription.textContent + ' ' : '') + 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
@@ -489,6 +615,7 @@
         modalTitle.textContent = button.dataset.title;
         const customOffer = { id: '', title: button.dataset.title, category: button.dataset.type.split(' · ')[0], city: button.dataset.type.split(' · ')[1] || '', price: card?.querySelector('.price')?.textContent || '', description: card?.querySelector('.listing-description')?.textContent || '', images: [], video: '' };
         setOfferContact(customOffer);
+        setCommunity('');
         document.getElementById('modalPrice').textContent = customOffer.price;
         document.getElementById('modalMedia').innerHTML = card?.querySelector('.listing-photo')?.innerHTML.replace(/<span class="badge">.*?<\/span>/, '') || '';
         modalText.textContent = customOffer.description + ' Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
@@ -512,7 +639,7 @@
     };
     async function loadLiveListings() {
       if (!config.url || !config.anonKey || !liveListings) return;
-      const endpoint = `${config.url.replace(/\/$/, '')}/rest/v1/listings?select=*&status=eq.available&order=created_at.desc`;
+      const endpoint = `${config.url.replace(/\/$/, '')}/rest/v1/listings?select=*&status=neq.draft&order=created_at.desc`;
       try {
         // Lecture publique directe : cela évite de dépendre d'un script CDN externe.
         const response = await fetch(endpoint, { headers: { apikey: config.anonKey, Authorization: `Bearer ${config.anonKey}` } });
@@ -530,7 +657,9 @@
               ? `<img src="${mediaSafe(image)}" alt="${mediaSafe(post.title)}">`
               : `<svg viewBox="0 0 250 160" fill="none" aria-hidden="true"><rect x="36" y="35" width="178" height="103" rx="8" fill="#EEF7E7" stroke="#153F32" stroke-width="5"/><circle cx="82" cy="72" r="13" fill="#F08B5D"/><path d="m49 120 42-37 28 23 22-16 61 30" stroke="#5A997A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
           const imageData = JSON.stringify(images).replace(/'/g, '&#39;');
-          return `<article class="listing live-listing" data-category="${category}" data-search="${mediaSafe(`${post.title || ''} ${post.city || ''} ${post.description || ''} ${post.price || ''}`.toLowerCase())}"><div class="listing-photo ${category}"><span class="badge">${video ? 'PHOTO + VIDÉO' : 'NOUVELLE OFFRE'}</span>${media}</div><div class="listing-body"><div class="listing-meta"><span>${mediaSafe(categoryNamesLive[category])} · ${mediaSafe(post.city)}</span><span>Disponible</span></div><h3>${mediaSafe(post.title)}</h3><div class="price">${mediaSafe(post.price)}</div><p class="listing-description">${mediaSafe(post.description)}</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Publié par Nexora</span><button class="details live-details" data-id="${mediaSafe(post.id)}" data-title="${mediaSafe(post.title)}" data-category="${mediaSafe(categoryNamesLive[category])}" data-city="${mediaSafe(post.city)}" data-description="${mediaSafe(post.description)}" data-price="${mediaSafe(post.price)}" data-images='${imageData}' data-video="${mediaSafe(video)}">Détails</button></div></div></article>`;
+          const status = ['available', 'reserved', 'sold'].includes(post.status) ? post.status : 'available';
+          const statusLabels = { available: 'Disponible', reserved: 'Réservé', sold: 'Vendu' };
+          return `<article class="listing live-listing" data-category="${category}" data-search="${mediaSafe(`${post.title || ''} ${post.city || ''} ${post.description || ''} ${post.price || ''}`.toLowerCase())}"><div class="listing-photo ${category}"><span class="badge">${video ? 'PHOTO + VIDÉO' : 'NOUVELLE OFFRE'}</span>${media}</div><div class="listing-body"><div class="listing-meta"><span>${mediaSafe(categoryNamesLive[category])} · ${mediaSafe(post.city)}</span><span class="status-badge status-${status}">${statusLabels[status]}</span></div><h3>${mediaSafe(post.title)}</h3><div class="price">${mediaSafe(post.price)}</div><p class="listing-description">${mediaSafe(post.description)}</p><div class="listing-footer"><span class="verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Publié par Nexora</span><button class="details live-details" data-id="${mediaSafe(post.id)}" data-title="${mediaSafe(post.title)}" data-category="${mediaSafe(categoryNamesLive[category])}" data-city="${mediaSafe(post.city)}" data-status="${status}" data-description="${mediaSafe(post.description)}" data-price="${mediaSafe(post.price)}" data-images='${imageData}' data-video="${mediaSafe(video)}">Détails</button></div></div></article>`;
         }).join('');
         if (!cardsHtml) return;
         liveListings.innerHTML = cardsHtml;
@@ -538,8 +667,9 @@
         liveListings.querySelectorAll('.live-details').forEach(button => button.addEventListener('click', () => {
           document.getElementById('modalTitle').textContent = button.dataset.title;
           let images = []; try { images = JSON.parse(button.dataset.images || '[]'); } catch (e) { images = []; }
-          const liveOffer = { id: button.dataset.id || '', title: button.dataset.title, category: button.dataset.category, city: button.dataset.city, price: button.dataset.price, description: button.dataset.description, images, video: button.dataset.video || '' };
+          const liveOffer = { id: button.dataset.id || '', title: button.dataset.title, category: button.dataset.category, city: button.dataset.city, status: button.dataset.status || 'available', price: button.dataset.price, description: button.dataset.description, images, video: button.dataset.video || '' };
           setOfferContact(liveOffer);
+          setCommunity(liveOffer.id);
           document.getElementById('modalPrice').textContent = button.dataset.price || '';
           document.getElementById('modalText').textContent = button.dataset.description || 'Pour demander une visite ou obtenir une information complémentaire, contacte-moi directement.';
           const media = document.getElementById('modalMedia');
@@ -558,5 +688,5 @@
     }
     loadLiveListings();
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a40569fddf5fb7b6',t:'MTc5MDI5MDkxOA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
